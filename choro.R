@@ -32,14 +32,17 @@ nyc_zip$zip<-as.character(nyc_zip$zip)
 
 #Now run a sql query to pull all of the counts of 311 incidents in the zip codes from nyc_zip file
 library(sqldf)
-dbDisconnect(db)            # Close connection
-db <- dbConnect(SQLite(), dbname="SelectedColumnsAllRowsThe311.db")
+db <- dbConnect(SQLite(), dbname="./data/SelectedColumnsAllRowsThe311.db")
 dbListTables(db)
 dbListFields(db, "The311")
-zip_counts <- dbGetQuery(db, "SELECT substr(trim(incidentzip), 1, 5) as zip, COUNT(*) as value FROM The311 GROUP BY substr(trim(incidentzip), 1, 5)")
+zip_counts <- dbGetQuery(db, "SELECT substr(trim(incidentzip), 1, 5) as zip, COUNT(*) as TotalIncidentCount FROM The311 GROUP BY substr(trim(incidentzip), 1, 5)")
+dbDisconnect(db)            # Close connection
 
 #save that file in zip_counts.csv file in the working directory
-#zip_counts<-read.csv("./data/zip_counts.csv", header = T)
+write.csv(zip_counts,"./data/zip_query.csv") #save this file for future use
+
+#if you want to test with same query as last time, comment out query and read the file so it runs faster
+#zip_counts<-read.csv("./data/zip_query.csv", header = T)
 zip_counts$zip<-as.character(zip_counts$zip)
 
 #remove any zips != 5 chars
