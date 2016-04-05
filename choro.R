@@ -43,6 +43,8 @@ write.csv(zip_counts,"./data/zip_query.csv") #save this file for future use
 
 #if you want to test with same query as last time, comment out query and read the file so it runs faster
 #zip_counts<-read.csv("./data/zip_query.csv", header = T)
+#zip_counts$X <- NULL
+
 zip_counts$zip<-as.character(zip_counts$zip)
 
 #remove any zips != 5 chars
